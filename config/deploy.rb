@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.1.0'
+lock '3.2.1'
 
 set :application, 'cap_project'
 set :deploy_user, 'deploy'
@@ -8,21 +8,14 @@ set :deploy_user, 'deploy'
 set :scm, :git
 set :repo_url, 'git@github.com:Nugen89/cap_project.git'
 
-# setup rbenv
+# setup rvm.
 set :rbenv_type, :system
-set :rbenv_ruby, '2.1.1'
+set :rbenv_ruby, '2.0.0-p353'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 
-# how many old releases do we want to keep, not much
-set :keep_releases, 5
-
-# what specs should be run before deployment is allowed to
-# continue, see lib/capistrano/tasks/run_tests.cap
-set :tests, []
-
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app
 # set :deploy_to, '/var/www/my_app'
@@ -47,6 +40,13 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
+# how many old releases do we want to keep, not much
+set :keep_releases, 5
+
+# what specs should be run before deployment is allowed to
+# continue, see lib/capistrano/tasks/run_tests.cap
+set :tests, []
+
 # which config files should be copied by deploy:setup_config
 # see documentation in lib/capistrano/tasks/setup_config.cap
 # for details of operations
@@ -62,7 +62,6 @@ set(:config_files, %w(
 set(:executable_config_files, %w(
   unicorn_init.sh
 ))
-
 # files which need to be symlinked to other parts of the
 # filesystem. For example nginx virtualhosts, log rotation
 # init scripts etc. The full_app_name variable isn't
@@ -88,28 +87,6 @@ set(:symlinks, [
   # }
 ])
 
-# namespace :deploy do
-
-#   desc 'Restart application'
-#   task :restart do
-#     on roles(:app), in: :sequence, wait: 5 do
-#       # Your restart mechanism here, for example:
-#       # execute :touch, release_path.join('tmp/restart.txt')
-#     end
-#   end
-
-#   after :publishing, :restart
-
-#   after :restart, :clear_cache do
-#     on roles(:web), in: :groups, limit: 3, wait: 10 do
-#       # Here we can do anything such as:
-#       # within release_path do
-#       #   execute :rake, 'cache:clear'
-#       # end
-#     end
-#   end
-
-# end
 
 # this:
 # http://www.capistranorb.com/documentation/getting-started/flow/
@@ -141,3 +118,27 @@ namespace :deploy do
   # automatically.
   after 'deploy:publishing', 'deploy:restart'
 end
+
+
+# namespace :deploy do
+
+#   desc 'Restart application'
+#   task :restart do
+#     on roles(:app), in: :sequence, wait: 5 do
+#       # Your restart mechanism here, for example:
+#       # execute :touch, release_path.join('tmp/restart.txt')
+#     end
+#   end
+
+#   after :publishing, :restart
+
+#   after :restart, :clear_cache do
+#     on roles(:web), in: :groups, limit: 3, wait: 10 do
+#       # Here we can do anything such as:
+#       # within release_path do
+#       #   execute :rake, 'cache:clear'
+#       # end
+#     end
+#   end
+
+# end
