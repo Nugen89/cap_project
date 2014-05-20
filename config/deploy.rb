@@ -6,7 +6,7 @@ set :deploy_user, 'deploy'
 
 # setup repo details
 set :scm, :git
-set :repo_url, 'git@github.com:username/repo.git'
+set :repo_url, 'git@github.com:Nugen89/cap_project.git'
 
 # setup rbenv
 set :rbenv_type, :system
